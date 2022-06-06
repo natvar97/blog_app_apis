@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.indialone.blogapp.models.User;
 import com.indialone.blogapp.payloads.UserDTO;
 
-@Service
 public interface UserService {
 	
 	UserDTO createUser(UserDTO user);

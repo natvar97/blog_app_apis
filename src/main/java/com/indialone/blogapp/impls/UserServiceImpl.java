@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +14,16 @@ import com.indialone.blogapp.models.User;
 import com.indialone.blogapp.payloads.UserDTO;
 import com.indialone.blogapp.repositories.UserRepo;
 import com.indialone.blogapp.services.UserService;
+import org.springframework.ui.ModelMap;
 
 @Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepo userRepo;
+
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@Override
 	public UserDTO createUser(UserDTO user) {
@@ -76,27 +81,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private User dtoToUser(UserDTO userDTO) {
-		User user = new User();
-		user.setId(userDTO.getId());
-		user.setName(userDTO.getName());
-		user.setAbout(userDTO.getAbout());
-		user.setEmail(userDTO.getEmail());
-		user.setPassword(userDTO.getPassword());
-		
-		return user;
+		return modelMapper.map(userDTO, User.class);
 	}
 	
 	private UserDTO userToDTO(User user) {
-		UserDTO userDTO = new UserDTO();
-		
-		userDTO.setId(user.getId());
-		userDTO.setName(user.getName());
-		userDTO.setAbout(user.getAbout());
-		userDTO.setEmail(user.getEmail());
-		userDTO.setPassword(user.getPassword());
-		
-		
-		return userDTO;
+		return modelMapper.map(user, UserDTO.class);
 	}
 	
 }
