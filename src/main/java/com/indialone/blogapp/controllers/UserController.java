@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.indialone.blogapp.models.ApiResponse;
+import com.indialone.blogapp.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,25 +28,25 @@ public class UserController {
 
         try {
             UserDTO user = userService.createUser(userDTO);
-            return new ResponseEntity<>(new ApiResponse("Success", true, user), HttpStatus.CREATED);
+            return new ResponseEntity<>(new ApiResponse(AppConstants.RESPONSE_MESSAGE_SUCCESS, true, user), HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new ApiResponse("Failed", false, Map.of()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApiResponse(AppConstants.RESPONSE_MESSAGE_FAILED, false, Map.of()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/")
     public ResponseEntity<ApiResponse> getAllUsers() {
         try {
-            return new ResponseEntity<>(new ApiResponse("Success", true, userService.getUsers()), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponse(AppConstants.RESPONSE_MESSAGE_SUCCESS, true, userService.getUsers()), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new ApiResponse("Failed", false, Map.of()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApiResponse(AppConstants.RESPONSE_MESSAGE_FAILED, false, Map.of()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<ApiResponse> deleteUserById(@PathVariable("userId") int id) {
+    @DeleteMapping("/{" + AppConstants.PATH_VARIABLE_USER_ID + "}")
+    public ResponseEntity<ApiResponse> deleteUserById(@PathVariable(AppConstants.PATH_VARIABLE_USER_ID) int id) {
         userService.deleteUser(id);
         String message = "User with ID: " + id + " deleted successfully";
         boolean status = true;
@@ -53,16 +54,16 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<ApiResponse> updateExistingUser(@Valid @RequestBody UserDTO userDTO, @PathVariable("userId") int id) {
+    @PutMapping("/{" + AppConstants.PATH_VARIABLE_USER_ID + "}")
+    public ResponseEntity<ApiResponse> updateExistingUser(@Valid @RequestBody UserDTO userDTO, @PathVariable(AppConstants.PATH_VARIABLE_USER_ID) int id) {
         UserDTO updatedUser = userService.updateUser(userDTO, id);
-        return new ResponseEntity<>(new ApiResponse("Success", true, updatedUser), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(AppConstants.RESPONSE_MESSAGE_SUCCESS, true, updatedUser), HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<ApiResponse> getUserById(@PathVariable("userId") int id) {
+    @GetMapping("/{" + AppConstants.PATH_VARIABLE_USER_ID + "}")
+    public ResponseEntity<ApiResponse> getUserById(@PathVariable(AppConstants.PATH_VARIABLE_USER_ID) int id) {
         UserDTO user = userService.getUserByID(id);
-        return new ResponseEntity<>(new ApiResponse("Success", true, user), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(AppConstants.RESPONSE_MESSAGE_SUCCESS, true, user), HttpStatus.OK);
     }
 
 }

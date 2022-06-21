@@ -1,6 +1,7 @@
 package com.indialone.blogapp.exceptions;
 
 import com.indialone.blogapp.models.ApiResponse;
+import com.indialone.blogapp.utils.AppConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -33,7 +34,7 @@ public class GlobalExceptionsHandler {
                 }
         );
 
-        return new ResponseEntity<>(new ApiResponse("Failed", false, response), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ApiResponse(AppConstants.RESPONSE_MESSAGE_FAILED, false, response), HttpStatus.BAD_REQUEST);
     }
 
 }
